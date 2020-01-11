@@ -1,24 +1,87 @@
 #!/bin/sh
+
+#
+# Start-TODO: 
+#      [ ] git clone https://github.com/ctaylo21/jarvis.git
+#      [ ]==> Add Ruby to your PATH by running:
+#      [ ] PATH=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/portable-ruby/current/bin:$PATH
+#      [ ] Warning: /home/linuxbrew/.linuxbrew/bin is not in your PATH.
+#      ==> Next steps:
+#      [ ] Install the Homebrew dependencies if you have sudo access:
+#      [ ] Debian, Ubuntu, etc.
+#      [ ] sudo apt-get install build-essential
+#      [ ] Fedora, Red Hat, CentOS, etc.
+#      [ ] sudo yum groupinstall 'Development Tools'
+#      See https://docs.brew.sh/linux for more information.
+#      - Configure Homebrew in your ~/.bash_profile by running
+#      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.bash_profile
+#      - Add Homebrew to your PATH
+#      eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+#      - We recommend that you install GCC by running:
+#      [ ] brew install gcc
+#      - Run `brew help` to get started
+#      - Further documentation:
+#      https://docs.brew.sh
+#      [ ] Warning: /home/linuxbrew/.linuxbrew/bin is not in your PATH.
+#      [ ] export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+#      [ ] verify user has sudo root for installing applications
+#      [ ] A=$(sudo -n -v 2>&1);test -z "$A" || echo $A|grep -q asswor
+#      [ ] was successful for me for the script. This expression gives 0 if the current user can call 'sudo' and 1 if not.
+#      [ ] dotFile mgmt
+#      [ ] . /home/linuxbrew/.linuxbrew/etc/profile.d/z.sh  <--bashrc|zshrc
+#      [ ] cp -R ./config/nvim/* ~/.config/nvim/
+#      [ ] airline: Could not resolve airline theme "space". Themes have been migrated to
+#                   github.com/vim-airline/vim-airline-themes.
+# End-TODO
+#
+
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Greetings. Preparing to power up and begin diagnostics.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
 INSTALLDIR=$PWD
 
+# 
+# Homebrew for Linux
+#
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Checking for Homebrew installation.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-brew="/usr/local/bin/brew"
+brew="/home/linuxbrew/.linuxbrew/bin/brew"
+yum="/usr/bin/yum"
+
 if [ -f "$brew" ]
 then
   echo "---------------------------------------------------------"
   echo "$(tput setaf 2)JARVIS: Homebrew is installed.$(tput sgr 0)"
   echo "---------------------------------------------------------"
 else
-  echo "---------------------------------------------------------"
-  echo "$(tput setaf 3)JARVIS: Installing Homebrew. Homebrew requires osx command lines tools, please download xcode first$(tput sgr 0)"
-  echo "---------------------------------------------------------"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  echo "------------------------------------------------------------------------------------------------------"
+  echo "$(tput setaf 3)JARVIS: Installing Homebrew. More applications available under sudo equivalent group$(tput sgr 0)"
+  echo "------------------------------------------------------------------------------------------------------"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+  export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+  export PATH=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/portable-ruby/current/bin:$PATH
+  if [ -f ${yum} ]; 
+  then 
+    sudo yum group list development-tools | grep -q Installed; 
+    if [ $? == 0 ]; 
+    then 
+      echo "---------------------------------------------------------"
+      echo "$(tput setaf 2)JARVIS: YUM detected Development-Tools.$(tput sgr 0)"
+      echo "---------------------------------------------------------"
+    else 
+  echo "--------------------------------------------------------"
+  echo "$(tput setaf 3)JARVIS: Installing development-tools. $(tput sgr 0)"
+  echo "--------------------------------------------------------"
+      yum group install development-tools; 
+    fi
+  #else
+  # if [ $(dpkg-query -W -f='${Status}' build-essential 2>/dev/null | grep -c "ok installed") -eq 0 ];
+  # then
+  #   apt install build-essential;
+  # fi
+  fi
 fi
 
 echo "---------------------------------------------------------"
@@ -26,6 +89,7 @@ echo "$(tput setaf 2)JARVIS: Installing system packages.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
 packages=(
+  "gcc"
   "git"
   "node"
   "ruby"
@@ -84,10 +148,16 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing system fonts.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
-brew tap homebrew/cask-fonts
-brew cask install font-hack-nerd-font
+#brew tap homebrew/cask-fonts            # doesn't work /w LinuxBrew; Error: Installing casks is supported only on macOS
+#brew cask install font-hack-nerd-font
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
+cd ~/.local/share/fonts && curl -fLo "Hack Regular Nerd Font Complete Mono" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf?raw=true"
+cd ~/.local/share/fonts && curl -fLo "Hack Regular Nerd Font Complete" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true"
+fc-cache ~/.local/share/fonts
+#fc-list | grep local.share.font
 
-localGit="/usr/local/bin/git"
+localGit="/home/linuxbrew/.linuxbrew/bin/git"
 if ! [[ -f "$localGit" ]]; then
   echo "---------------------------------------------------------"
   echo "$(tput setaf 1)JARVIS: Invalid git installation. Aborting. Please install git.$(tput sgr 0)"
