@@ -148,7 +148,7 @@ packages=(
   "zsh"
   "ripgrep"
   "fzf"
-  "z"
+  "zsh"
 )
 
 for i in "${packages[@]}"
@@ -246,10 +246,17 @@ echo "---------------------------------------------------------"
 
 source install/backup.sh
 source install/link.sh
+
 nvim +PlugInstall +qall
 nvim +UpdateRemotePlugins +qall
 nvim -c 'CocInstall -sync coc-css coc-emmet coc-json coc-html|q'
 nvim -c 'CocUpdateSync|q'
+
+
+vim +PlugInstall +qall
+vim +UpdateRemotePlugins +qall
+vim -c 'CocInstall -sync coc-css coc-emmet coc-json coc-html coc-snippets coc-tslint-plugin coc-tsserver coc-ultisnips|q'
+vim -c 'CocUpdateSync|q'     # :call coc#util#install()    #fixed error
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing Space vim-airline theme.$(tput sgr 0)"
