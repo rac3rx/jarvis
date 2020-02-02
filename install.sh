@@ -3,6 +3,7 @@
 #
 # Start-TODO: 
 #      [ ] REF: git clone https://github.com/ctaylo21/jarvis.git
+#      [ ] Linuxbrew or Homebrew Menu
 #      [x] DEPENDENCIES - HOMEBREW FOR LINUX
 #      [x]     Homebrew dependencies if you have sudo access:
 #      [x]         Debian, Ubuntu, etc.
@@ -53,7 +54,8 @@
 #      [ ]     airline: Could not resolve airline theme "space". Themes have been migrated to
 #                   github.com/vim-airline/vim-airline-themes.
 #      [ ]     spaceship
-#      [ ]         SPACESHIP: Failed to symlink /home/linuxbrew/.linuxbrew/lib/node_modules/spaceship-prompt/spaceship.zsh to /usr/local/share/zsh/site-functions.
+#      [ ]         SPACESHIP: Failed to symlink /home/linuxbrew/.linuxbrew/lib/node_modules/spaceship-prompt/spaceship.zsh to
+#                             /usr/local/share/zsh/site-functions.
 #      [ ]     tmux
 #      [ ]         unknown variable: TMUX_PLUGIN_MANAGER_PATH
 #      [ ]         FATAL: Tmux Plugin Manager not configured in tmux.conf
