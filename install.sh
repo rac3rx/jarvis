@@ -63,6 +63,7 @@
 #      [ ]     nvim +UpdateRemotePlugins +qall
 #      [ ]         Aborted (core dumped)
 #      [ ]         rm ~/.config/nvim/space.vim
+#      [ ]     iterm2 for osx NOT LINUX;  brew cask install iterm2
 # End-TODO
 #
 
@@ -137,17 +138,20 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing system packages.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
+# brew install vim     # down below in array
+# echo 'eval "$(perl -I$HOME/perl6/lib/perl5 -Mlocal::lib=$HOME/perl5)"' >> ~/.bashrc
+
 packages=(
+  "fzf"
   "gcc"
   "git"
-  "node"
-  "ruby"
-  "tmux"
   "neovim"
+  "node"
   "python3"
-  "zsh"
   "ripgrep"
-  "fzf"
+  "ruby"
+  "vim"
+  "tmux"
   "zsh"
 )
 
@@ -197,13 +201,13 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing system fonts.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
-#brew tap homebrew/cask-fonts            # doesn't work /w LinuxBrew; Error: Installing casks is supported only on macOS
-#brew cask install font-hack-nerd-font
+brew tap homebrew/cask-fonts            # doesn't work /w LinuxBrew; Error: Installing casks is supported only on macOS
+brew cask install font-hack-nerd-font
 mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
 cd ~/.local/share/fonts && curl -fLo "Hack Regular Nerd Font Complete Mono" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf?raw=true"
 cd ~/.local/share/fonts && curl -fLo "Hack Regular Nerd Font Complete" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true"
-fc-cache ~/.local/share/fonts
+fc-cache ~/.local/share/fonts    #bash: fc-cache: command not found
 #fc-list | grep local.share.font
 
 localGit="/home/linuxbrew/.linuxbrew/bin/git"
@@ -238,7 +242,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosugges
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing vtop.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-npm install -g vtop
+npm install -g vtop     # update screenrc for vtop
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing Neovim plugins and linking dotfiles.$(tput sgr 0)"
@@ -255,7 +259,7 @@ nvim -c 'CocUpdateSync|q'
 
 vim +PlugInstall +qall
 vim +UpdateRemotePlugins +qall
-vim -c 'CocInstall -sync coc-css coc-emmet coc-json coc-html coc-snippets coc-tslint-plugin coc-tsserver coc-ultisnips|q'
+vim -c 'CocInstall -sync coc-css coc-emmet coc-java coc-json coc-html coc-snippets coc-tslint-plugin coc-tsserver coc-ultisnips|q'
 vim -c 'CocUpdateSync|q'     # :call coc#util#install()    #fixed error
 
 echo "---------------------------------------------------------"
@@ -263,6 +267,7 @@ echo "$(tput setaf 2)JARVIS: Installing Space vim-airline theme.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
 cp ~/.config/nvim/space.vim ~/.config/nvim/plugged/vim-airline-themes/autoload/airline/themes/space.vim
+# vim##cp ~/.config/nvim/space.vim ~/.config/nvim/plugged/vim-airline-themes/autoload/airline/themes/space.vim
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)JARVIS: Installing tmux plugin manager.$(tput sgr 0)"
