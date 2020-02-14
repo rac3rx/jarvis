@@ -64,6 +64,7 @@
 #      [ ]         Aborted (core dumped)
 #      [ ]         rm ~/.config/nvim/space.vim
 #      [ ]     iterm2 for osx NOT LINUX;  brew cask install iterm2
+#      [ ] brew cask alternative; docker, flatpack, snap, or AppImage (apps: chrome, firefox, webdev)
 # End-TODO
 #
 
